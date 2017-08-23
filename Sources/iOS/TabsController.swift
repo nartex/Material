@@ -273,19 +273,48 @@ fileprivate extension TabsController {
         guard let i = tabBar.tabItems.index(of: tabItem) else {
             return
         }
-        
+
         guard i != selectedIndex else {
             return
         }
-        
+
         transition(to: viewControllers[i]) { [weak self] (isFinished) in
             guard isFinished else {
                 return
             }
-            
+
             self?.selectedIndex = i
         }
 
-        tabBar.handleLineAnimation(tabItem: tabItem)
+        tabBar.handleLineAnimation(tabItem: tabItem, isTriggeredByUserInteraction: true)
+    }
+}
+
+extension TabsController {
+    /**
+     Handles the tabItem.
+     - Parameter tabItem: A TabItem.
+     */
+    func select(index: Int) {
+        let tabItem = tabBar.tabItems[index]
+        guard tabBar.delegate?.tabBar?(tabBar: tabBar, shouldSelect: tabItem) ?? true else { return }
+
+        guard let i = tabBar.tabItems.index(of: tabItem) else {
+            return
+        }
+
+        guard i != selectedIndex else {
+            return
+        }
+
+        transition(to: viewControllers[i]) { [weak self] (isFinished) in
+            guard isFinished else {
+                return
+            }
+
+            self?.selectedIndex = i
+        }
+
+        tabBar.handleLineAnimation(tabItem: tabItem, isTriggeredByUserInteraction: true)
     }
 }

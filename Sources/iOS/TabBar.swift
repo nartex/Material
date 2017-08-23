@@ -337,8 +337,8 @@ fileprivate extension TabBar {
 extension TabBar {
     /// Handles the tabItem touch event.
     @objc
-    func handleLineAnimation(tabItem: TabItem) {
-        animate(to: tabItem, isTriggeredByUserInteraction: true)
+    func handleLineAnimation(tabItem: TabItem, isTriggeredByUserInteraction: Bool) {
+        animate(to: tabItem, isTriggeredByUserInteraction: isTriggeredByUserInteraction)
     }
 }
 
