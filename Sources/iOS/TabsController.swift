@@ -295,7 +295,7 @@ extension TabsController {
      Handles the tabItem.
      - Parameter tabItem: A TabItem.
      */
-    func select(index: Int) {
+    open func select(index: Int) {
         let tabItem = tabBar.tabItems[index]
         guard tabBar.delegate?.tabBar?(tabBar: tabBar, shouldSelect: tabItem) ?? true else { return }
 
