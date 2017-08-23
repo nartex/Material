@@ -286,6 +286,6 @@ fileprivate extension TabsController {
             self?.selectedIndex = i
         }
 
-        tabBar.animate(to: tabItem)
+        tabBar.handleLineAnimation(tabItem: tabItem)
     }
 }
