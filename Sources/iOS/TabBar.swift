@@ -53,6 +53,16 @@ public protocol TabBarDelegate {
      */
     @objc
     optional func tabBar(tabBar: TabBar, willSelect tabItem: TabItem)
+
+    /**
+     A delegation method that is executed when the tabItem is about to select the next tab.
+     - Parameter tabBar: A TabBar.
+     - Parameter tabItem: A TabItem.
+
+     - returns: Whether or not the tab bar should select the next tab.
+     */
+    @objc
+    optional func tabBar(tabBar: TabBar, shouldSelect tabItem: TabItem) -> Bool
     
     /**
      A delegation method that is executed when the tabItem did complete the
@@ -387,6 +397,8 @@ fileprivate extension TabBar {
      - Parameter completion: An optional completion block.
      */
     func animate(to tabItem: TabItem, isTriggeredByUserInteraction: Bool, completion: ((TabItem) -> Void)? = nil) {
+        guard delegate?.tabBar?(tabBar: self, shouldSelect: tabItem) ?? true else { return }
+	
         if isTriggeredByUserInteraction {
             delegate?.tabBar?(tabBar: self, willSelect: tabItem)
         }
