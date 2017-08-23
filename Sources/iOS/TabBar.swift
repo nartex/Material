@@ -53,6 +53,15 @@ public protocol TabBarDelegate {
      */
     @objc
     optional func tabBar(tabBar: TabBar, willSelect tabItem: TabItem)
+
+    /**
+     A delegation method that is executed when the tabItem is about to select the next tab.
+     - Parameter tabBar: A TabBar.
+     - Parameter tabItem: A TabItem.
+     - returns: Whether or not the tab bar should select the next tab.
+     */
+    @objc
+    optional func tabBar(tabBar: TabBar, shouldSelect tabItem: TabItem) -> Bool
     
     /**
      A delegation method that is executed when the tabItem did complete the
@@ -249,20 +258,9 @@ fileprivate extension TabBar {
         for v in tabItems {
             v.grid.columns = 0
             v.contentEdgeInsets = .zero
-            
-            prepareLineAnimationHandler(tabItem: v)
         }
         
         selectedTabItem = tabItems.first
-    }
-    
-    /**
-     Prepares the line animation handlers.
-     - Parameter tabItem: A TabItem.
-     */
-    func prepareLineAnimationHandler(tabItem: TabItem) {
-        removeLineAnimationHandler(tabItem: tabItem)
-        tabItem.addTarget(self, action: #selector(handleLineAnimation(tabItem:)), for: .touchUpInside)
     }
     
     /// Prepares the contentView.
@@ -336,17 +334,7 @@ fileprivate extension TabBar {
     }
 }
 
-fileprivate extension TabBar {
-    /**
-     Removes the line animation handlers.
-     - Parameter tabItem: A TabItem.
-     */
-    func removeLineAnimationHandler(tabItem: TabItem) {
-        tabItem.removeTarget(self, action: #selector(handleLineAnimation(tabItem:)), for: .touchUpInside)
-    }
-}
-
-fileprivate extension TabBar {
+extension TabBar {
     /// Handles the tabItem touch event.
     @objc
     func handleLineAnimation(tabItem: TabItem) {

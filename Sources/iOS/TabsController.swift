@@ -268,6 +268,8 @@ fileprivate extension TabsController {
      */
     @objc
     func handle(tabItem: TabItem) {
+        guard tabBar.delegate?.tabBar?(tabBar: tabBar, shouldSelect: tabItem) ?? true else { return }
+
         guard let i = tabBar.tabItems.index(of: tabItem) else {
             return
         }
@@ -283,5 +285,7 @@ fileprivate extension TabsController {
             
             self?.selectedIndex = i
         }
+
+        tabBar.animate(to: tabItem)
     }
 }
